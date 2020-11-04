@@ -10,11 +10,15 @@ const filteredTodoListState = selector({
 
     switch (filter) {
       case 'Show Completed':
-        return list.filter((item) => item.isComplete);
+        return [...list]
+          .filter((item) => item.isComplete)
+          .sort((a, b) => a.priority - b.priority);
       case 'Show Uncompleted':
-        return list.filter((item) => !item.isComplete);
+        return [...list]
+          .filter((item) => !item.isComplete)
+          .sort((a, b) => a.priority - b.priority);
       default:
-        return list;
+        return [...list].sort((a, b) => a.priority - b.priority);
     }
   },
 });
@@ -37,5 +41,14 @@ const todoListStatsState = selector({
     };
   },
 });
+
+// const orderedByPriorityListState = selector({
+//   key: 'orderedByPriorityListState',
+//   get: ({ get }) => {
+//     const list = get(filteredTodoListState);
+//     console.log("object")
+//     return list.sort((a, b) => a.priority - b.priority);
+//   },
+// });
 
 export { filteredTodoListState, todoListStatsState };

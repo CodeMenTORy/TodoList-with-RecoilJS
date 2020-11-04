@@ -23,9 +23,14 @@ export default function TodoItem({ item }) {
 
   // 删除item
   const deleteItem = () => {
-    console.log('item is deleted');
     const newList = [...todoList];
     newList.splice(index, 1);
+    setTodoList(newList);
+  };
+
+  const priorityChange = ({ target: { value } }) => {
+    const newList = [...todoList];
+    newList.splice(index, 1, { ...item, priority: value });
     setTodoList(newList);
   };
 
@@ -37,6 +42,17 @@ export default function TodoItem({ item }) {
         onChange={toggleItemCompletion}
       />
       <input type="text" value={item.text} onChange={editItemText} />
+      <select
+        name="itemPriority"
+        id="itemPriority"
+        value={item.priority}
+        onChange={priorityChange}
+      >
+        <option value={1}>❗❗❗❗</option>
+        <option value={2}>❗❗❗</option>
+        <option value={3}>❗❗</option>
+        <option value={4}>❗</option>
+      </select>
       <button onClick={deleteItem}>❌</button>
     </div>
   );
