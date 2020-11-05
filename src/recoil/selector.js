@@ -40,4 +40,27 @@ const todoListStatsState = selector({
   },
 });
 
-export { filteredTodoListState, todoListStatsState };
+const orderedTodoListState = selector({
+  key: 'orderedTodoListState',
+  get: ({ get }) => {
+    const list = [...get(filteredTodoListState)];
+    const filter = get(todoListFilterState);
+    // 对存在完成任务的列表进行划分，分为未完成与完成两个部分
+    if (
+      filter === 'Show All' &&
+      list.length > 0 &&
+      list.some((item) => item.isComplete)
+    ) {
+      for (let i = 0, count = 0; count < list.length; i++, count++) {
+        if (list[i].isComplete === true) {
+          //将完成任务按顺序放到队尾
+          list.push(...list.splice(i, 1));
+          i--;
+        }
+      }
+    }
+    return list;
+  },
+});
+
+export { filteredTodoListState, todoListStatsState, orderedTodoListState };
